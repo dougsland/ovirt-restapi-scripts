@@ -109,8 +109,8 @@ for item in list:
 	print "name: %s"          % (item.find("name").text)
 
 	for subitem in item.findall("actions/link"):
-		print "actions: link rel: %s"   % (subitem).attrib["rel"]#.find("rel"))
-		print "actions: link href: %s"  % (subitem).attrib["href"]#.find("rel"))
+		print "actions: link rel: %s"   % (subitem).attrib["rel"]
+		print "actions: link href: %s"  % (subitem).attrib["href"]
 
 	for subitem in item.findall("link"):
 		print "link rel: %s"   % (subitem).attrib["rel"]
