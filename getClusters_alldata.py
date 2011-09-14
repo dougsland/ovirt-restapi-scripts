@@ -88,5 +88,5 @@ for item in list:
 	print "memory_policy -> transparent_hugepages -> enabled: %s"  % (item.find("memory_policy/transparent_hugepages/enabled").text)
 	print "version minor: %s"                	    	       % (item.find("version").attrib["minor"])
 	print "version major: %s"                	    	       % (item.find("version").attrib["major"])
-	print "error_handling -> on_error: %s"  % (item.find("error_handling/on_error").text)
+	print "error_handling -> on_error: %s"  		       % (item.find("error_handling/on_error").text)
 	print "\n"
