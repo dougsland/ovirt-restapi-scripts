@@ -17,10 +17,18 @@ import urllib2
 import base64
 import sys
 
+
+if len(sys.argv) != 3:
+	print "Usage: %s my_datacenter_name storage_type" %(sys.argv[0])
+	print "Example: %s my_datacenter nfs" %(sys.argv[0])
+	sys.exit(1)
+
+print "Creating datacenter %s" %(sys.argv[1])
+
 xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <data_center>
-	<name>SuperDataCenter</name>
-	<storage_type>nfs</storage_type>
+	<name>""" + sys.argv[1] + """</name>
+	<storage_type>""" + sys.argv[2] + """</storage_type>
 	<version minor=\"0\" major=\"3\"/>
 </data_center>
 """
