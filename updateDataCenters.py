@@ -83,8 +83,6 @@ def renameDataCenter(dc_id):
 
 if __name__ == "__main__":
 
-	print len(sys.argv)
-
 	if len(sys.argv) != 3:
         	print "Usage: %s new_data_center_name new_description" %(sys.argv[0])
 		sys.exit(1)
