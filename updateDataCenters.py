@@ -19,18 +19,16 @@ import sys
 from xml.etree import ElementTree
 
 # Example
-ADDR     = "192.168.123.176"
-API_PORT = "8443"
-USER     = "rhevm@ad.rhev3.com"
-PASSWD   = "T0pSecreT!"
+ADDR        = "192.168.123.176"
+API_PORT    = "8443"
+USER        = "rhevm@ad.rhev3.com"
+PASSWD      = "T0pSecreT!"
 
 def getDataCenterId(dc_name):
 
         URL      = "https://" + ADDR + ":" + API_PORT + "/api/datacenters"
 
         request = urllib2.Request(URL)
-
-        print "Preparing to remove: %s" %(dc_name)
 
         base64string = base64.encodestring('%s:%s' % (USER, PASSWD)).strip()
         request.add_header("Authorization", "Basic %s" % base64string)
@@ -55,15 +53,15 @@ def getDataCenterId(dc_name):
         return dc_id
 
 def renameDataCenter(dc_id):
+
 	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 	<data_center>
-		<name>""" + sys.argv[1] + """</name>
-		<description>""" + sys.argv[2] + """</description>
+		<name>""" + sys.argv[2] + """</name>
+		<description>""" + sys.argv[3] + """</description>
 	</data_center>
 	"""
-
 	# Setting URL
-	URL      = "https://" + ADDR + ":" + API_PORT + "/api/datacenters/dd073ccc-f8cb-43b3-86d5-c8fb045e50ba"
+	URL      = "https://" + ADDR + ":" + API_PORT + "/api/datacenters/" + dc_id
 
 	request = urllib2.Request(URL)
 	print "Connecting to: " + URL
@@ -81,14 +79,17 @@ def renameDataCenter(dc_id):
 		print "\t- Try to login using the same user/pass by the Admin Portal and check the error!"
 		sys.exit(2)
 
+	return 0
+
 if __name__ == "__main__":
 
-	if len(sys.argv) != 3:
-        	print "Usage: %s new_data_center_name new_description" %(sys.argv[0])
+	if len(sys.argv) != 4:
+        	print "Usage: %s data_center_name new_data_center_name new_description" %(sys.argv[0])
 		sys.exit(1)
 
 	print "updating datacenter to %s" %(sys.argv[1])
-	print "updating description to: %s" %(sys.argv[2])
+	print "new name: %s" %(sys.argv[2])
+	print "new description: %s" %(sys.argv[3])
 
 	id_ret = getDataCenterId(sys.argv[1])
 
@@ -99,4 +100,3 @@ if __name__ == "__main__":
         ret = renameDataCenter(id_ret)
         if ret == 0:
                 print "DataCenter updated"
-
