@@ -86,6 +86,11 @@ if __name__ == "__main__":
 		sys.exit(1)
 
 	id_ret = getDataCenterId(sys.argv[1])
+
+	if id_ret == None:
+		print "Cannot find DataCenter"
+		sys.exit(1)
+
 	ret = removeDataCenter(id_ret)
 	if ret == 0:
 		print "DataCenter removed"
