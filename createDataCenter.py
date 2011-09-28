@@ -24,6 +24,7 @@ if len(sys.argv) != 3:
 	sys.exit(1)
 
 print "Creating datacenter %s" %(sys.argv[1])
+print "Storage type: %s"       %(sys.argv[2])
 
 xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <data_center>
