@@ -23,8 +23,8 @@ USER     = "rhevm@ad.rhev3.com"
 PASSWD   = "T0pSecreT!"
 
 if len(sys.argv) != 2:
-        print "Usage: %s cluster_name" %(sys.argv[0])
-        print "Example: %s MyCluster"  %(sys.argv[0])
+        print "Usage: %s datacenter_name" %(sys.argv[0])
+        print "Example: %s MyDataCenter"  %(sys.argv[0])
         sys.exit(1)
 
 # Setting URL
