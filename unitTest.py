@@ -216,19 +216,19 @@ class RemoveElements(unittest.TestCase):
 			
 if __name__ == '__main__':
 
-	# Test 1 - search all URLs
+	# Test - search all URLs
 	suite = unittest.TestLoader().loadTestsFromTestCase(TestURLs)
 	unittest.TextTestRunner(verbosity=0).run(suite)
 
-	# Test 2 - Add new Elements
+	# Test - Add new Elements
 	suite = unittest.TestLoader().loadTestsFromTestCase(AddElements)
 	unittest.TextTestRunner(verbosity=0).run(suite)
 
-	# Test 3 - Search Elementes Added before
+	# Test - Search Elementes Added before
 	suite = unittest.TestLoader().loadTestsFromTestCase(SearchElements)
 	unittest.TextTestRunner(verbosity=0).run(suite)
 
-	# Test 4 - Remove Elements
+	# Test - Remove Elements
 	suite = unittest.TestLoader().loadTestsFromTestCase(RemoveElements)
 	unittest.TextTestRunner(verbosity=0).run(suite)
 
