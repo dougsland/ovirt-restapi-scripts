@@ -117,4 +117,4 @@ if __name__ == "__main__":
         
 	list = tree.findall("iscsi_target")
 	for item in list:
-		print "iscsi_target: %s:" % (item.text)
+		print "iscsi_target: %s" % (item.text)
