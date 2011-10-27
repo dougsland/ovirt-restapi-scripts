@@ -76,7 +76,9 @@ for item in list:
 	print "id:  %s"           % (item.attrib["id"])
 	print "href:  %s"         % (item.attrib["href"])
 	print "name: %s"          % (item.find("name").text)
-	print "description: %s"   % (item.find("description").text)
+
+	if item.find("description") <> None:	
+		print "description: %s"   % (item.find("description").text)
 
 	for subitem in item.findall("link"):
 		print "link rel: %s"   % (subitem).attrib["rel"]
