@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 	if len(sys.argv) != 3:
 		print "Usage: %s datacenter cluster_name" %(sys.argv[0])
-		print "Example: %s my_datacenter nfs" %(sys.argv[0])
+		print "Example: %s my_datacenter newClusterName" %(sys.argv[0])
 		sys.exit(1)
 
 	print "Creating cluster %s" %(sys.argv[1])
