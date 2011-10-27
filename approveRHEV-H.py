@@ -47,7 +47,7 @@ def getHostId(host_name):
         for item in list:
                 if host_name == item.find("name").text:
                         host_id = item.attrib["id"]
-                        print "datacenter id %s" % (host_id)
+                        print "host id %s" % (host_id)
                         break
 
         return host_id
