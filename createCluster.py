@@ -68,8 +68,6 @@ if __name__ == "__main__":
                 print "Cannot find DataCenter"
                 sys.exit(1)
 
-	print id_ret
-
 	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 	<cluster>
 	    <name>""" + sys.argv[2] + """</name>
