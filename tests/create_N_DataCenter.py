@@ -1,0 +1,71 @@
+#!/usr/bin/python
+#
+# Copyright (C) 2011
+#
+# Douglas Schilling Landgraf <dougsland@redhat.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+import urllib2
+import base64
+import sys
+
+
+if len(sys.argv) != 4:
+	print "Usage: %s my_datacenter_name storage_type number_of_DataCenters" %(sys.argv[0])
+	print "Example: %s my_datacenter nfs 100" %(sys.argv[0])
+	sys.exit(1)
+
+print "Creating datacenter %s" %(sys.argv[1])
+print "Storage type: %s"       %(sys.argv[2])
+
+nr_DC = sys.argv[3]
+
+for nrm in range(1,  int(nr_DC)):
+
+	name = sys.argv[1] + "_" + str(nrm)
+	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<data_center>
+		<name>""" + name + """</name>
+		<storage_type>""" + sys.argv[2] + """</storage_type>
+		<version minor=\"0\" major=\"3\"/>
+	</data_center>
+	"""
+
+	# Example
+	ADDR     = "192.168.123.176"
+	API_PORT = "8443"
+	USER     = "rhevm@ad.rhev3.com"
+	PASSWD   = "T0pSecreT!"
+
+	# Setting URL
+	URL      = "https://" + ADDR + ":" + API_PORT + "/api/datacenters"
+
+
+	request = urllib2.Request(URL)
+	print "Connecting to: " + URL
+	print "Creating DataCenter: " + name
+
+	base64string = base64.encodestring('%s:%s' % (USER, PASSWD)).strip()
+	request.add_header("Authorization", "Basic %s" % base64string)
+	request.add_header('Content-Type', 'application/xml')
+
+	try:
+		ret = urllib2.urlopen(request, xml_request)
+	except urllib2.URLError, e:
+		print "%s" %(e)
+		print "Are you trying to add an existing item?"
+		sys.exit(-1)
+
+print "Done!"
+
+# To see the response from the server 
+#response = ret.read()
+#print response
