@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
 	if len(sys.argv) != 2:
 		print "Usage: %s my_host_name" %(sys.argv[0])
-		print "Example: %s my_host_name" %(sys.argv[0])
+		print "Example: %s 192.168.1.60" %(sys.argv[0])
 		sys.exit(1)
 
 	print "setting maintenance -> host: %s" %(sys.argv[1])

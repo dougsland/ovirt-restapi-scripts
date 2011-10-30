@@ -106,7 +106,7 @@ if __name__ == "__main__":
 	response = ret.read()
         tree = ElementTree.XML(response)
 
-	#print response
+	print response
         list = tree.findall("iscsi")
 	for item in list:
 		print "iscsi/address: %s" % (item.find("address").text)

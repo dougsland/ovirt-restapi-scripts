@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 	if len(sys.argv) != 6:
 		print "Usage: %s my_storage_name type nfs address path MyHost" %(sys.argv[0])
-		print "Example: %s my_storage nfs 192.168.1.54 /nfs/dataNFS MyHost" %(sys.argv[0])
+		print "Example: %s my_storage nfs 192.168.1.103 /nfs/dataNFS MyHost" %(sys.argv[0])
 		sys.exit(1)
 
 	print "Creating storage %s" %(sys.argv[1])
