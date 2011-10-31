@@ -101,7 +101,7 @@ if __name__ == "__main__":
 		print "%s" %(e)
 		print "possible issues:"
 		print "- wrong path?"
-		print "- localfs should be located under /data/images/ and be set as 36:36 permission"
+		print "- localfs should be located /data/images/rhev and be set as 36:36 permission"
 		print "- Are you trying to add an existing item?"
 		sys.exit(-1)
 
