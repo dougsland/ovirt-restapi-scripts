@@ -100,7 +100,7 @@ for item in list:
 		print "\tpath: %s"            % (item.find("storage/path").text)
 
 	elif (item.find("storage/type").text) == "localfs":
-		print "localfs"
+		print "\tpath: %s"            % (item.find("storage/path").text)
 
 	else:
 		if item.find("storage/volume_group") != None:
