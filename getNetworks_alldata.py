@@ -79,8 +79,9 @@ for item in list:
 	print "name: %s"          % (item.find("name").text)
 	print "description: %s"   % (item.find("description").text)
 
-	print "data_center id: %s"            % (item.find("data_center").attrib["id"])
-	print "data_center href: %s"          % (item.find("data_center").attrib["href"])
+	if item.find("data_center") != None:
+		print "data_center id: %s"            % (item.find("data_center").attrib["id"])
+		print "data_center href: %s"          % (item.find("data_center").attrib["href"])
 
 	print "stp: %s"  		      % (item.find("stp").text)
 	print "status -> state: %s"	      % (item.find("status/state").text)
