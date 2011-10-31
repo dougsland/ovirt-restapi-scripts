@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 	if len(sys.argv) != 4:
 		print "Usage: %s My_Storage_Name MyHostAddress path" %(sys.argv[0])
-		print "Example: %s my_storage 192.168.1.60 /data/image/pendriveFS" %(sys.argv[0])
+		print "Example: %s my_storage 192.168.1.60 /data/image/rhev" %(sys.argv[0])
 		sys.exit(1)
 
 	print "Creating storage %s" %(sys.argv[1])
