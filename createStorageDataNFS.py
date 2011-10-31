@@ -55,9 +55,9 @@ def getHostId(host_name):
 
 if __name__ == "__main__":
 
-	if len(sys.argv) != 6:
-		print "Usage: %s my_storage_name type NfsAddress NfsPath MyHost" %(sys.argv[0])
-		print "Example: %s my_storage nfs 192.168.1.103 /nfs/dataNFS MyHost" %(sys.argv[0])
+	if len(sys.argv) != 5:
+		print "Usage: %s my_storage_name NfsAddress NfsPath MyHost" %(sys.argv[0])
+		print "Example: %s my_storage 192.168.1.103 /nfs/dataNFS 192.168.1.60" %(sys.argv[0])
 		sys.exit(1)
 
 	print "Creating storage %s" %(sys.argv[1])
@@ -65,9 +65,7 @@ if __name__ == "__main__":
 	print "Address: %s"         %(sys.argv[3])
 	print "Path: %s"         %(sys.argv[4])
 
-	#print xml_request
-
-	id_ret = getHostId(sys.argv[5])
+	id_ret = getHostId(sys.argv[4])
 
         if id_ret == None:
                 print "Cannot find Host"
@@ -83,8 +81,8 @@ if __name__ == "__main__":
 		<host id="""+"\""+ """"""+id_ret+""""""+ "\""+"""/>
 	<storage>
 		<type>nfs</type>
-		<address>""" + sys.argv[3] + """</address>
-		<path>""" + sys.argv[4] + """</path>
+		<address>""" + sys.argv[2] + """</address>
+		<path>""" + sys.argv[3] + """</path>
 	</storage>
 	</storage_domain>
 	"""
