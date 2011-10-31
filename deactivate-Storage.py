@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
 	if len(sys.argv) != 3:
 		print "Usage: %s my_datacenter my_storage" %(sys.argv[0])
-		print "Example: %s dc_localfs storage_localfs" %(sys.argv[0])
+		print "Example: %s datacenter_localfs storage_localfs" %(sys.argv[0])
 		sys.exit(1)
 
 	print "datacenter: %s" %(sys.argv[1])
