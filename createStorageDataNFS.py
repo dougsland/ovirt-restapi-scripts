@@ -82,7 +82,7 @@ if __name__ == "__main__":
 		<type>data</type>
 		<host id="""+"\""+ """"""+id_ret+""""""+ "\""+"""/>
 	<storage>
-		<type>""" + sys.argv[2] + """</type>
+		<type>nfs</type>
 		<address>""" + sys.argv[3] + """</address>
 		<path>""" + sys.argv[4] + """</path>
 	</storage>
