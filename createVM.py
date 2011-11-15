@@ -17,6 +17,7 @@ import urllib2
 import base64
 import sys
 
+print len(sys.argv)
 
 if len(sys.argv) <= 3:
 	print "Usage: %s cluster_name vm_NAME memory (in bytes) template (if you have one, otherwise it will be Blank)" %(sys.argv[0])
@@ -27,19 +28,34 @@ if len(sys.argv) <= 3:
 
 print "Creating vm %s" %(sys.argv[2])
 
+if len(sys.argv) < 5: 
+	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<vm>
+	  <name>""" + sys.argv[2] + """</name>
+	  <cluster>
+	    <name>""" + sys.argv[1] + """</name>
+	  </cluster>
+	  <template>
+	    <name>Blank</name>
+	  </template>
+	  <memory>""" + sys.argv[3] + """</memory> 
+	</vm>
+	"""
+else:
+	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<vm>
+	  <name>""" + sys.argv[2] + """</name>
+	  <cluster>
+	    <name>""" + sys.argv[1] + """</name>
+	  </cluster>
+	  <template>
+	    <name>""" + sys.argv[4] + """</name>
+	  </template>
+	  <memory>""" + sys.argv[3] + """</memory> 
+	</vm>
+	"""
 
-xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<vm>
-  <name>""" + sys.argv[2] + """</name>
-  <cluster>
-    <name>""" + sys.argv[1] + """</name>
-  </cluster>
-  <template>
-    <name>""" + sys.argv[4] + """</name>
-  </template>
-  <memory>""" + sys.argv[3] + """</memory> 
-</vm>
-"""
+#print xml_request
 
 # Example
 ADDR     = "192.168.123.176"
