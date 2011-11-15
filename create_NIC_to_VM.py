@@ -54,9 +54,9 @@ def getVMId(vm_name):
 
 if __name__ == "__main__":
 
-	if len(sys.argv) != 4:
-		print "Usage: %s vm_name nic_name network_name" %(sys.argv[0])
-		print "Example: %s myVirtualMachine nic1 rhevm" %(sys.argv[0])
+	if len(sys.argv) != 5:
+		print "Usage: %s vm_name nic_name network_name nic_type (virtio/e1000/rtl8139)" %(sys.argv[0])
+		print "Example: %s myVirtualMachine nic1 rhevm virtio" %(sys.argv[0])
 		sys.exit(1)
 
 	print "creating network to vm: %s" %(sys.argv[1])
@@ -69,6 +69,7 @@ if __name__ == "__main__":
 
 	xml_request ="""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 	<nic>
+	  <interface>""" + sys.argv[4] + """</interface>
 	  <name>""" + sys.argv[2] + """</name>
 	  <network>
 	    <name>""" + sys.argv[3] + """</name>
