@@ -55,7 +55,7 @@ def getVMId(vm_name):
 if __name__ == "__main__":
 
 	if len(sys.argv) != 5:
-		print "Usage: %s vm_name nic_name network_name nic_type (virtio/e1000/rtl8139)" %(sys.argv[0])
+		print "Usage: %s vm_name nic_name network_name nic_type (virtio/e1000/rtl8139/rtl8139_virtio)" %(sys.argv[0])
 		print "Example: %s myVirtualMachine nic1 rhevm virtio" %(sys.argv[0])
 		sys.exit(1)
 
