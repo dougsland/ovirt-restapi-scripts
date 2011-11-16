@@ -17,8 +17,6 @@ import urllib2
 import base64
 import sys
 
-print len(sys.argv)
-
 if len(sys.argv) <= 3:
 	print "Usage: %s cluster_name vm_NAME memory (in bytes) template (if you have one, otherwise it will be Blank)" %(sys.argv[0])
 	print "Example: %s cluster_ISCSI myNEW_VM 536870912" %(sys.argv[0])
