@@ -87,7 +87,7 @@ if __name__ == "__main__":
 		ret = urllib2.urlopen(request, xml_request)
 	except urllib2.URLError, e:
 		print "%s" %(e)
-		print "Are you trying to add an existing item?"
+		print "Are you trying to start an started item?"
 		sys.exit(-1)
 
 	print "Done!"
