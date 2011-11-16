@@ -73,7 +73,7 @@ if __name__ == "__main__":
 	#print xml_request
 
 	# Setting URL
-	URL      = "https://" + ADDR + ":" + API_PORT + "/api/vms/" + id_ret + "/start"
+	URL      = "https://" + ADDR + ":" + API_PORT + "/api/vms/" + id_ret + "/stop"
 
 	request = urllib2.Request(URL)
 	print "Connecting to: " + URL
@@ -87,7 +87,7 @@ if __name__ == "__main__":
 		ret = urllib2.urlopen(request, xml_request)
 	except urllib2.URLError, e:
 		print "%s" %(e)
-		print "Are you trying to start an started vm?"
+		print "Are you trying to stop an stopped vm?"
 		sys.exit(-1)
 
 	print "Done!"
