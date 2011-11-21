@@ -2,7 +2,8 @@
 #
 # Copyright (C) 2011
 #
-# Douglas Schilling Landgraf <dougsland@redhat.com>
+# Author: Douglas Schilling Landgraf <dougsland@redhat.com>
+# Contributor: Amador Pahim <amador@pahim.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -123,6 +124,32 @@ for item in list:
 	print "port: %s"  		      % (item.find("port").text)
 	print "storage_manager: %s"  	      % (item.find("storage_manager").text)
 	print "power_management/enabled: %s"  % (item.find("power_management/enabled").text)
+
+	"""
+	EXAMPLE XML output with power management enabled
+	================================================
+        <power_management type="bladecenter">
+            <enabled>true</enabled>
+            <address>192.168.0.111</address>
+            <username>root</username>
+            <options>
+                <option value="123" name="port"/>
+                <option value="2" name="b"/>
+                <option value="1" name="a"/>
+                <option value="True" name="secure"/>
+                <option value="2" name="slot"/>
+            </options>
+        </power_management>
+	"""
+
+	if item.find("power_management/enabled").text == "true":
+		print "power_management type: %s"     % (item.find("power_management").attrib["type"])
+		print "power_management/address: %s"  % (item.find("power_management/address").text)
+		print "power_management/username: %s" % (item.find("power_management/username").text)
+
+		for subitem in item.findall("power_management/options/option"):
+			print "power management option: %s value: %s"   % ((subitem).attrib["value"],(subitem).attrib["name"])
+
 	print "ksm: %s"  		      % (item.find("ksm/enabled").text)
 	print "transparent_hugepages: %s"     % (item.find("transparent_hugepages/enabled").text)
 	print "iscsi -> initiator: %s"        % (item.find("iscsi/initiator").text)
