@@ -14,17 +14,18 @@ this module performs a smoke test procedure of ovirt node / rhevh
 
 import sys
 import os
-
-from ovirtsdk.api import API
 import datetime
-from ovirtsdk.xml import params
 import subprocess
 import time
+
+from ovirtsdk.api import API
+from ovirtsdk.xml import params
+
 
 __all__ = []
 __version__ = 0.1
 __date__ = '2015-02-24'
-__updated__ = '2015-02-24'
+__updated__ = '2015-03-09'
 
 node_name = "node1"
 engine_url = "https://192.168.100.100/api"
@@ -36,37 +37,34 @@ def approve(api, node_name):
 
     def wait_for_status(host, state, timeout_in_sec=60):
         if host is None:
-            raise TypeError
+            raise TypeError("Host value must have some type")
 
         start = datetime.datetime.now()
 
         while True:
             if host.status.state == state:
-                return True
+                return
             if (datetime.datetime.now() - start).seconds < timeout_in_sec:
                 break
             host = host.update()
 
         print ("\033[1m Error: \033[0m timeout waiting for " +
                "%s , current state %s " % (host.status.state, state))
-        return False
+
+        raise RuntimeError('Cant reach desired state %s' % state)
 
     start = datetime.datetime.now()
 
     while api.hosts.get(node_name) is None:
-        if (datetime.datetime.now() - start).seconds > timeout:
+        if (datetime.datetime.now() - start).seconds > 60:
             print "\033[1m Error: \033[0m node not found"
-            raise LookupError
+            raise LookupError('Cant find the node %s' % node_name)
 
     host = api.hosts.get(node_name)
     # validate the status
-    if wait_for_status(host, 'pending_approval', 0) is False:
-        print "\033[1m Error: \033[0m node cant get approval"
-        raise RuntimeError
-        # approve the host
+    wait_for_status(host, 'pending_approval', 0)
     host.approve()
-    if wait_for_status(host, 'up', 0) is False:
-        raise RuntimeError
+    wait_for_status(host, 'up', 0)
 
     return host
 '''
@@ -84,25 +82,22 @@ def approve(api, node_name):
 
 
 def import_vm(api, vm_name):
-    try:
-        export_storage = api.storagedomains.get("export")
-        main_storage = api.storagedomains.get("data")
-        imported_vm = export_storage.vms.get(vm_name)
-        imported_vm.import_vm(params.Action(storage_domain=main_storage,
-                                            cluster=api.clusters.get(name="Default")))
-        print 'VM was imported successfully'
-        print 'Waiting for VM to reach Down status'
-        start = datetime.datetime.now()
-        while api.vms.get(vm_name).status.state != 'down':
-            if (datetime.datetime.now() - start).seconds > 600:
-                print "\033[1m Error: \033[0m import fail"
-                raise LookupError
-            print api.vms.get(vm_name).status.state
-            time.sleep(10)
-        return api.vms.get(vm_name)
-    except Exception as e:
-            print '\033[1m Error: \033[0m import fail:\n%s' % str(e)
-            return None
+
+    export_storage = api.storagedomains.get("export")
+    main_storage = api.storagedomains.get("data")
+    imported_vm = export_storage.vms.get(vm_name)
+    imported_vm.import_vm(params.Action(storage_domain=main_storage,
+                                        cluster=api.clusters.get(name="Default")))
+    print 'VM was imported successfully'
+    print 'Waiting for VM to reach Down status'
+    start = datetime.datetime.now()
+    while api.vms.get(vm_name).status.state != 'down':
+        if (datetime.datetime.now() - start).seconds > 600:
+            print "\033[1m Error: \033[0m import fail"
+            raise RuntimeError("Cant reach down state in imported VM")
+        print api.vms.get(vm_name).status.state
+        time.sleep(10)
+    return api.vms.get(vm_name)
 
 
 def create_nfs_storage(api, spm, storage_type):
@@ -120,81 +115,56 @@ def create_nfs_storage(api, spm, storage_type):
                                           storage=params.Storage(type_="NFS",
                                                                  address="192.168.100.100",
                                                                  path='/' + storage_type))
-    try:
-        api.storagedomains.add(storage_params)
-        api.datacenters.get(name="Default").storagedomains.add(
-            api.storagedomains.get(name=storage_type))
-        return True
-
-    except Exception as e:
-        print 'Failed to create NFS Storage Domain:\n%s' % str(e)
-
-    return False
+    api.storagedomains.add(storage_params)
+    api.datacenters.get(name="Default").storagedomains.add(
+        api.storagedomains.get(name=storage_type))
 
 
 def main(argv=None):
 
-    try:
+    # setup connection
+    engine_api = API(url=engine_url,
+                     username="admin@internal",
+                     password=password, insecure=True)
 
-        # setup connection
-        engine_api = API(url=engine_url,
-                         username="admin@internal",
-                         password=password, insecure=True)
+    print "Starting smoke testing"
+    rhevh = approve(engine_api, node_name)
+    print "Host approved"
 
-        rhevh = approve(engine_api, node_name)
+    create_nfs_storage(engine_api, rhevh, 'data')
+    print "Data storage created"
 
-        if rhevh is None:
-            return 1
-        print "Host approved"
+    create_nfs_storage(engine_api, rhevh, 'export')
+    print "Export storage created"
 
-        if create_nfs_storage(engine_api, rhevh, 'data') is False:
-            return 1
-        print "Data storage created"
+    subprocess.check_call(
+        ["rhevm-image-uploader",
+         "--insecure",
+         "-u",
+         "admin@internal",
+         "-p",
+         password,
+         "-e",
+         "export",
+         "upload",
+         testvm])
 
-        if create_nfs_storage(engine_api, rhevh, 'export') is False:
-            return 1
-        print "Export storage created"
+    print "Uploaded VMs"
 
-        subprocess.check_call(
-            ["rhevm-image-uploader",
-             "--insecure",
-             "-u",
-             "admin@internal",
-             "-p",
-             password,
-             "-e",
-             "export",
-             "upload",
-             testvm])
+    test_vm = import_vm(engine_api, testvm)
+    print "Vm imported"
 
-        print "Uploaded VMS"
+    start = datetime.datetime.now()
+    test_vm.start()
+    while test_vm.status.state != 'up':
+        if (datetime.datetime.now() - start).seconds > 600:
+            print "\033[1m Error: \033[0m start fail"
+            raise RuntimeError("Cant start imported VM")
+        time.sleep(5)
+        test_vm = test_vm.update()
 
-        test_vm = import_vm(engine_api, testvm)
-        if test_vm is None:
-            return 1
-        print "Vm imported"
-
-        start = datetime.datetime.now()
-        test_vm.start()
-        while test_vm.status.state != 'up':
-            if (datetime.datetime.now() - start).seconds > 600:
-                print "\033[1m Error: \033[0m start fail"
-                raise RuntimeError
-            test_vm = test_vm.update()
-
-        print "All success"
-        return 0
-
-    except KeyboardInterrupt:
-        # handle keyboard interrupt ###
-        return 0
-    except Exception as e:
-        if DEBUG or TESTRUN:
-            raise(e)
-        indent = len(program_name) * " "
-        sys.stderr.write(program_name + ": " + repr(e) + "\n")
-        sys.stderr.write(indent + "  for help use --help")
-        return 2
+    print "All success"
+    return 0
 
 if __name__ == "__main__":
     sys.exit(main())
