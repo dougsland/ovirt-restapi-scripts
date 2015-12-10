@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright (C) 2011
+# Copyright (C) 2015
 #
 # Douglas Schilling Landgraf <dougsland@redhat.com>
 # Jorge Luis Andrade Escobar <jandrade@itm.gt>
