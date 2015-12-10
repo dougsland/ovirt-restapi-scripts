@@ -3,6 +3,7 @@
 # Copyright (C) 2011
 #
 # Douglas Schilling Landgraf <dougsland@redhat.com>
+# Jorge Luis Andrade Escobar <jandrade@itm.gt>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 # Example
-ADDR     = "nrhevm.itmlabs.local"
+ADDR     = "rhevm.example.com"
 API_PORT = "443"
 USER     = "admin@internal"
 PASSWD   = "T0pSecreT!"
